@@ -1,6 +1,6 @@
 # email-proxy
 
-# description
+### description
 This Amazon SES account will be used to send transactional OTP emails
 for user login authentication.
 
@@ -19,25 +19,44 @@ All emails are transactional authentication messages only.
 No marketing or promotional emails are sent.
 All recipients expect to receive these emails as part of system login.
 
-# Arch
-[ System / Event ]
-        |
-        v
-+-------------------+
-|   AWS Lambda      |
-| (Python function) |
-+-------------------+
-        |
-        v
-+-------------------+
-|  Amazon SES       |
-|  (Email Service)  |
-+-------------------+
-        |
-        v
-+-------------------+
-| Recipient Mail    |
-| @samsung.com      |
-+-------------------+
-
+### Email Authentication Architecture
+User
+ |
+ | Login request
+ v
++---------------------------+
+| Internal Authentication   |
+| System                    |
++---------------------------+
+ |
+ | Generate OTP
+ v
++---------------------------+
+| AWS Lambda (OTP Sender)   |
++---------------------------+
+ |
+ | Send OTP email
+ | From: no-reply@affiliate-domain.example
+ v
++---------------------------+
+| Amazon SES                |
+| (Affiliate-specific       |
+|  verified domain)         |
++---------------------------+
+ |
+ | Receive email via SES
+ v
++---------------------------+
+| AWS Lambda (Email Proxy)  |
+| - Parse OTP               |
+| - Validate source domain  |
+| - Forward securely        |
++---------------------------+
+ |
+ | Forward OTP email
+ v
++---------------------------+
+| Corporate Email System    |
+| user@samsung.com          |
++---------------------------+
 From: no-reply@samsungsdscoe.com
