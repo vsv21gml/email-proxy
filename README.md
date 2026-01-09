@@ -20,6 +20,7 @@ No marketing or promotional emails are sent.
 All recipients expect to receive these emails as part of system login.
 
 ### Email Authentication Architecture
+```
 User
  |
  | Login request
@@ -60,3 +61,4 @@ User
 | user@samsung.com          |
 +---------------------------+
 From: no-reply@samsungsdscoe.com
+```
